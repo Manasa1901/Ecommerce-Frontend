@@ -63,10 +63,9 @@ const Orders = () => {
 
             <span
               className={`px-4 py-1 rounded-full text-sm font-bold
-                ${
-                  order.status === "Delivered"
-                    ? "bg-green-200 text-green-800"
-                    : order.status === "Cancelled"
+                ${order.status === "Delivered"
+                  ? "bg-green-200 text-green-800"
+                  : order.status === "Cancelled"
                     ? "bg-red-200 text-red-800"
                     : "bg-yellow-200 text-yellow-800"
                 }`}
@@ -80,23 +79,37 @@ const Orders = () => {
             {order.items.map((item) => (
               <div
                 key={item._id}
-                className="flex justify-between mb-2"
+                className="flex items-center justify-between mb-4"
               >
-                <div>
-                  <p className="font-semibold">
-                    {item.product.name}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Qty: {item.quantity}
-                  </p>
+                {/* LEFT: IMAGE + DETAILS */}
+                <div className="flex items-center gap-4">
+                  <img
+                    src={item.product.image}
+                    alt={item.product.name}
+                    className="w-20 h-20 object-cover rounded-lg border"
+                  />
+
+                  <div>
+                    <p className="font-semibold text-lg">
+                      {item.product.name}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Qty: {item.quantity}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Price: ₹{item.price}
+                    </p>
+                  </div>
                 </div>
 
-                <p className="font-semibold">
+                {/* RIGHT: SUBTOTAL */}
+                <p className="font-semibold text-lg">
                   ₹{item.price * item.quantity}
                 </p>
               </div>
             ))}
           </div>
+
 
           {/* FOOTER */}
           <div className="border-t mt-4 pt-4 flex justify-between items-center">
