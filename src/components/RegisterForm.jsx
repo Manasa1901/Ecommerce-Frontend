@@ -3,61 +3,43 @@ import { useNavigate, Link } from "react-router";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const LoginForm = () => {
+const RegisterForm = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match ❌", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
+
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", {
+      const res = await axios.post("http://localhost:5000/auth/register", {
+        name,
         email,
         password,
       });
 
-      // Save token
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      // Set session storage for authentication
-      sessionStorage.setItem("isLoggedIn", "true");
-      sessionStorage.setItem("role", res.data.user.role || "user");
-
-      // Merge guest cart to user cart
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      if (localCart.length > 0) {
-        for (const item of localCart) {
-          try {
-            await axios.post(
-              "http://localhost:5000/cart",
-              { productId: item._id, quantity: item.quantity },
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
-          } catch (err) {
-            console.error("Failed to merge cart item", err);
-          }
-        }
-        localStorage.removeItem("cart");
-      }
-
-      toast.success("Login successful 🎉", {
+      toast.success("Registration successful! Please login 🎉", {
         position: "top-right",
         autoClose: 3000,
       });
 
       setTimeout(() => {
-        if (res.data.user.role === "admin") {
-          navigate("/admin");
-        } else {
-          navigate("/");
-        }
+        navigate("/login");
       }, 1500);
 
     } catch (err) {
       toast.error(
-        err.response?.data?.error || "Login failed ❌",
+        err.response?.data?.error || "Registration failed ❌",
         {
           position: "top-right",
           autoClose: 3000,
@@ -69,9 +51,18 @@ const LoginForm = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-amber-50">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-xl border border-amber-200">
-        <h1 className="text-center font-bold text-3xl mb-8 text-amber-900">Login</h1>
+        <h1 className="text-center font-bold text-3xl mb-8 text-amber-900">Register</h1>
 
         <form onSubmit={handleSubmit}>
+          <label className="block mb-2 text-lg font-medium text-amber-800">Name</label>
+          <input
+            type="text"
+            className="w-full border border-amber-300 p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
           <label className="block mb-2 text-lg font-medium text-amber-800">Email</label>
           <input
             type="email"
@@ -84,25 +75,35 @@ const LoginForm = () => {
           <label className="block mb-2 text-lg font-medium text-amber-800">Password</label>
           <input
             type="password"
-            className="w-full border border-amber-300 p-3 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            className="w-full border border-amber-300 p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
+          <label className="block mb-2 text-lg font-medium text-amber-800">Confirm Password</label>
+          <input
+            type="password"
+            className="w-full border border-amber-300 p-3 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+
           <button
             type="submit"
             className="bg-amber-600 text-white w-full py-3 rounded-lg font-semibold hover:bg-amber-700 transition duration-200 shadow-md"
           >
-            Login
+            Register
           </button>
         </form>
 
         <p className="text-center mt-4 text-amber-800">
-          Don't have an account? <Link to="/register" className="text-amber-600 hover:underline">Register here</Link>
+          Already have an account? <Link to="/login" className="text-amber-600 hover:underline">Login here</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

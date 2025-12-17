@@ -8,6 +8,7 @@ import ProductDetails from "./components/ProductDetails";
 import Cart from "./components/Cart";
 import Orders from "./components/Orders";
 import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
 import Admin from "./components/Admin";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -29,6 +30,7 @@ function App() {
 
         <Route path="/orders" element={<Orders />} />
         <Route path="/login" element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
 
         <Route
           path="/admin"
@@ -49,7 +51,7 @@ function App() {
         />
       </Routes>
 
-      {location.pathname !== "/login" && <Footer />}
+      {location.pathname !== "/login" && location.pathname !== "/register" && <Footer />}
       </>
   );
 }

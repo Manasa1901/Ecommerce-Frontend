@@ -34,7 +34,10 @@ const Header = () => {
               Logout
             </button>
           ) : (
-            <Link to="/login" className="hover:text-amber-700">Login</Link>
+            <>
+              <Link to="/login" className="hover:text-amber-700">Login</Link>
+              <Link to="/register" className="bg-amber-700 text-white px-4 py-1 rounded-md hover:bg-amber-800 transition">Register</Link>
+            </>
           )}
           {isAdmin && (
             <Link
