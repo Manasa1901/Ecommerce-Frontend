@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -13,14 +15,27 @@ const Cart = () => {
   /* ================= FETCH CART ================= */
   const fetchCart = async () => {
     try {
+      setError(null);
       const res = await axios.get("https://ecommerce-backend-a1yo.onrender.com/cart", {
         headers: { Authorization: `Bearer ${token}` },
+        timeout: 10000,
       });
 
       setCartItems(res.data.cart.products || []);
       setSummary(res.data.summary);
     } catch (err) {
       console.error(err);
+      if (err.code === 'ECONNABORTED') {
+        setError("Request timed out. Please check your internet connection.");
+      } else if (err.response) {
+        setError(`Server error: ${err.response.status} - ${err.response.statusText}`);
+      } else if (err.request) {
+        setError("Network error: Unable to connect to server.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,11 +99,48 @@ const Cart = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <span className="ml-3 text-lg text-gray-600">Loading cart...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-50 to-pink-100">
+        <div className="text-6xl mb-4">⚠️</div>
+        <h2 className="text-2xl font-bold text-red-800 mb-2">Error Loading Cart</h2>
+        <p className="text-red-600 mb-6 text-center max-w-md">{error}</p>
+        <button 
+          onClick={() => {
+            setLoading(true);
+            setError(null);
+            fetchCart();
+          }}
+          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
   if (cartItems.length === 0) {
     return (
-      <h2 className="text-center mt-10 text-xl">
-        Your cart is empty 🛒
-      </h2>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="text-6xl mb-4">🛒</div>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">Your Cart is Empty</h2>
+        <p className="text-gray-600 mb-6">Add some products to get started!</p>
+        <button 
+          onClick={() => navigate("/products")}
+          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Browse Products
+        </button>
+      </div>
     );
   }
 
