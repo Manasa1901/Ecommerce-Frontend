@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/cart",
+  baseURL: "https://ecommerce-backend-a1yo.onrender.com/cart",
 });
 
 API.interceptors.request.use((req) => {

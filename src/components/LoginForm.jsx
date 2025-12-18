@@ -12,7 +12,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", {
+      const res = await axios.post("https://ecommerce-backend-a1yo.onrender.com/auth/login", {
         email,
         password,
       });
@@ -31,7 +31,7 @@ const LoginForm = () => {
         for (const item of localCart) {
           try {
             await axios.post(
-              "http://localhost:5000/cart",
+              "https://ecommerce-backend-a1yo.onrender.com/cart",
               { productId: item._id, quantity: item.quantity },
               { headers: { Authorization: `Bearer ${token}` } }
             );

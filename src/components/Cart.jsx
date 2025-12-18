@@ -13,7 +13,7 @@ const Cart = () => {
   /* ================= FETCH CART ================= */
   const fetchCart = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/cart", {
+      const res = await axios.get("https://ecommerce-backend-a1yo.onrender.com/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -31,7 +31,7 @@ const Cart = () => {
   /* ================= INCREASE ================= */
   const increaseQuantity = async (item) => {
     await axios.put(
-      "http://localhost:5000/cart/update",
+      "https://ecommerce-backend-a1yo.onrender.com/cart/update",
       {
         productId: item.product._id,
         quantity: item.quantity + 1,
@@ -49,7 +49,7 @@ const Cart = () => {
     }
 
     await axios.put(
-      "http://localhost:5000/cart/update",
+      "https://ecommerce-backend-a1yo.onrender.com/cart/update",
       {
         productId: item.product._id,
         quantity: item.quantity - 1,
@@ -62,7 +62,7 @@ const Cart = () => {
   /* ================= REMOVE ================= */
   const removeItem = async (item) => {
     await axios.delete(
-      `http://localhost:5000/cart/remove/${item.product._id}`,
+      `https://ecommerce-backend-a1yo.onrender.com/cart/remove/${item.product._id}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     fetchCart();
@@ -72,7 +72,7 @@ const Cart = () => {
   const handleCheckout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/orders",
+        "https://ecommerce-backend-a1yo.onrender.com/orders",
         { paymentMethod: "COD" },
         { headers: { Authorization: `Bearer ${token}` } }
       );

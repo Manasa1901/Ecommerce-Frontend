@@ -21,7 +21,7 @@ export default function ProductForm({ addProducts }) {
 
 
     try {
-      const res = await axios.post("http://localhost:5000/products", newProduct);
+      const res = await axios.post("https://ecommerce-backend-a1yo.onrender.com/products", newProduct);
       console.log("Product added:", res.data);
 
       // Update frontend list

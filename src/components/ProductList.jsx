@@ -8,7 +8,7 @@ const ProductList = () => {
   // LOAD PRODUCTS FROM JSON-SERVER
   useEffect(() => {
     axios
-      .get("http://localhost:5000/products")
+      .get("https://ecommerce-backend-a1yo.onrender.com/products")
       .then((res) => setProducts(res.data))
       .catch((err) => console.error("Error loading products:", err));
   }, []);

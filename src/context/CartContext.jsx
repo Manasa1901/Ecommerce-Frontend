@@ -38,7 +38,7 @@ export const CartProvider = ({ children }) => {
 
     // 🔹 LOGGED-IN USER
     const res = await axios.post(
-      "http://localhost:5000/cart",
+      "https://ecommerce-backend-a1yo.onrender.com/cart",
       {
         productId: product._id,
         quantity: 1,
