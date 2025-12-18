@@ -82,11 +82,11 @@ const Orders = () => {
                 className="flex items-center justify-between mb-4"
               >
                 {/* LEFT: IMAGE + DETAILS */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                   <img
                     src={item.product.image}
                     alt={item.product.name}
-                    className="w-20 h-20 object-cover rounded-lg border"
+                    className="w-32 h-32 object-cover rounded-lg border shadow-sm hover:shadow-md transition-shadow"
                   />
 
                   <div>

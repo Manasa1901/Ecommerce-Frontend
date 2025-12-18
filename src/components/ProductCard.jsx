@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="border-4 border-yellow-500 rounded-xl p-3 hover:shadow-xl transition">
+    <div className="border-4 border-yellow-500 h-100 rounded-xl p-3 hover:shadow-xl transition">
       <Link to={`/products/${product._id}`}>
         <img
           src={product.image}
