@@ -7,21 +7,39 @@ import { toast } from "react-toastify";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { addToCart } = useCart();
 
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem("token");
 
+      if (!token) {
+        setError("Please log in to view your orders.");
+        setLoading(false);
+        return;
+      }
+
       const res = await axios.get("https://ecommerce-backend-a1yo.onrender.com/orders/my-orders", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        timeout: 10000, // 10 second timeout
       });
 
       setOrders(res.data.orders || []);
+      setError(null);
     } catch (err) {
       console.error("Fetch orders error:", err);
+      if (err.code === 'ECONNABORTED') {
+        setError("Request timed out. Please check your internet connection and try again.");
+      } else if (err.response) {
+        setError(`Server error: ${err.response.status} - ${err.response.statusText}`);
+      } else if (err.request) {
+        setError("Network error: Unable to connect to server. Please check your internet connection.");
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
+      }
     } finally {
       setLoading(false);
     }
@@ -47,6 +65,26 @@ const Orders = () => {
       <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
         <span className="ml-3 text-lg text-gray-600">Loading orders...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-50 to-pink-100">
+        <div className="text-6xl mb-4">⚠️</div>
+        <h2 className="text-2xl font-bold text-red-800 mb-2">Error Loading Orders</h2>
+        <p className="text-red-600 mb-6 text-center max-w-md">{error}</p>
+        <button 
+          onClick={() => {
+            setLoading(true);
+            setError(null);
+            fetchOrders();
+          }}
+          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
