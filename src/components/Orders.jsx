@@ -116,7 +116,7 @@ const Orders = () => {
 
   // ================= ORDERS LIST =================
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div className="max-w-6xl mx-auto p-6 min-h-screen">
       <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
         My Orders 📦
       </h1>
