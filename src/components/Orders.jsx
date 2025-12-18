@@ -14,36 +14,24 @@ const Orders = () => {
     try {
       const token = localStorage.getItem("token");
 
-      if (!token) {
-        setError("Please log in to view your orders.");
-        setLoading(false);
-        return;
-      }
-
-      const res = await axios.get("https://ecommerce-backend-a1yo.onrender.com/orders/my-orders", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        timeout: 10000, // 10 second timeout
-      });
+      const res = await axios.get(
+        "https://ecommerce-backend-a1yo.onrender.com/orders/my-orders",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setOrders(res.data.orders || []);
       setError(null);
     } catch (err) {
-      console.error("Fetch orders error:", err);
-      if (err.code === 'ECONNABORTED') {
-        setError("Request timed out. Please check your internet connection and try again.");
-      } else if (err.response) {
-        setError(`Server error: ${err.response.status} - ${err.response.statusText}`);
-      } else if (err.request) {
-        setError("Network error: Unable to connect to server. Please check your internet connection.");
-      } else {
-        setError("An unexpected error occurred. Please try again later.");
-      }
+      setError("Failed to load orders");
     } finally {
       setLoading(false);
     }
   };
+
 
   const handleReorder = async (product) => {
     const success = await addToCart(product);
@@ -75,7 +63,7 @@ const Orders = () => {
         <div className="text-6xl mb-4">⚠️</div>
         <h2 className="text-2xl font-bold text-red-800 mb-2">Error Loading Orders</h2>
         <p className="text-red-600 mb-6 text-center max-w-md">{error}</p>
-        <button 
+        <button
           onClick={() => {
             setLoading(true);
             setError(null);
@@ -118,10 +106,10 @@ const Orders = () => {
                 Order ID: <span className="text-blue-600">{order._id.slice(-8)}</span>
               </p>
               <p className="text-sm text-gray-500 mt-1">
-                Ordered on: {new Date(order.createdAt).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+                Ordered on: {new Date(order.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
                 })}
               </p>
               {order.status === "Processing" && (
