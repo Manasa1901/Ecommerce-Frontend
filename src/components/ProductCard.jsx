@@ -13,44 +13,54 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="border-4 border-yellow-500 rounded-xl p-3 hover:shadow-xl transition duration-200">
-      <Link to={`/products/${product._id}`}>
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-90 object-cover rounded-xl"
-        />
+    <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-amber-100">
+      <Link to={`/products/${product._id}`} className="block">
+        <div className="relative overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>
+        </div>
 
-        <h2 className="font-bold text-xl mt-3">{product.name}</h2>
+        <div className="p-6">
+          <h2 className="font-bold text-xl text-amber-900 mb-2 line-clamp-2 group-hover:text-amber-700 transition-colors duration-200">
+            {product.name}
+          </h2>
+
+          {/* Rating */}
+          <div className="flex items-center mb-3">
+            <div className="flex items-center">
+              <span className="text-amber-400 text-lg">★</span>
+              <span className="text-sm text-amber-600 ml-1 font-medium">
+                {product.rating || 4}.0
+              </span>
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-center gap-3 mb-4">
+            <p className="text-2xl font-bold text-amber-600">
+              ₹{product.price}
+            </p>
+            {product.originalPrice && (
+              <p className="text-lg line-through text-gray-500">
+                ₹{product.originalPrice}
+              </p>
+            )}
+          </div>
+        </div>
       </Link>
 
-      {/* ⭐ SINGLE STAR */}
-      <div className="flex items-center mt-1">
-        <span className="text-yellow-400 text-lg">★</span>
-        <span className="text-sm text-gray-500 ml-1">
-          {product.rating || 4}.0
-        </span>
+      <div className="px-6 pb-6">
+        <button
+          onClick={handleAddToCart}
+          className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+        >
+          Add to Cart
+        </button>
       </div>
-
-      {/* 💰 PRICE */}
-      <div className="flex items-center gap-3 mt-1">
-        <p className="text-2xl font-bold text-yellow-500">
-          ₹{product.price}
-        </p>
-
-        {product.originalPrice && (
-          <p className="text-lg line-through text-red-500">
-            ₹{product.originalPrice}
-          </p>
-        )}
-      </div>
-
-      <button
-        onClick={handleAddToCart}
-        className="w-full mt-4 border-2 py-2 rounded-lg font-bold hover:bg-yellow-500 transition duration-200"
-      >
-        Add to Cart
-      </button>
     </div>
   );
 };
