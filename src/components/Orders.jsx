@@ -62,6 +62,7 @@ const Orders = () => {
   };
 
   const handleImageError = (e) => {
+    console.log('Order item image failed to load:', e.target.src);
     e.target.src = "https://via.placeholder.com/112x112/f3f4f6/9ca3af?text=No+Image";
   };
 

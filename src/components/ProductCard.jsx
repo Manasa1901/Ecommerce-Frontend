@@ -1,10 +1,14 @@
 import { Link, useNavigate } from "react-router";
 import { useCart } from "../context/CartContext";
-import { getImageUrl } from "../utils/imageUtils";
+import { getImageUrl, getFallbackUrls } from "../utils/imageUtils";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
+
+  // Debug: Log the product data and generated URL
+  console.log('Product data:', product);
+  console.log('Image URL:', getImageUrl(product.image));
 
   const handleAddToCart = async () => {
     const success = await addToCart(product);
@@ -14,7 +18,17 @@ const ProductCard = ({ product }) => {
   };
 
   const handleImageError = (e) => {
-    e.target.src = "https://via.placeholder.com/400x300/f3f4f6/9ca3af?text=No+Image";
+    console.log('Image failed to load:', e.target.src);
+    const fallbackUrls = getFallbackUrls(product.image);
+    const currentSrc = e.target.src;
+
+    const currentIndex = fallbackUrls.findIndex(url => url === currentSrc);
+    if (currentIndex < fallbackUrls.length - 1) {
+      console.log('Trying fallback URL:', fallbackUrls[currentIndex + 1]);
+      e.target.src = fallbackUrls[currentIndex + 1];
+    } else {
+      console.log('All URLs failed, using final placeholder');
+    }
   };
 
   return (

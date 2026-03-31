@@ -1,5 +1,5 @@
 import dustbin from "../assets/dustbin.png";
-import { getImageUrl } from "../utils/imageUtils";
+import { getImageUrl, getFallbackUrls } from "../utils/imageUtils";
 
 const CartItem = ({ index, item, cart, setCart }) => {
 
@@ -23,7 +23,15 @@ const CartItem = ({ index, item, cart, setCart }) => {
   };
 
   const handleImageError = (e) => {
-    e.target.src = "https://via.placeholder.com/80x80/f3f4f6/9ca3af?text=No+Image";
+    console.log('Cart item image failed to load:', e.target.src);
+    const fallbackUrls = getFallbackUrls(item.image);
+    const currentSrc = e.target.src;
+
+    const currentIndex = fallbackUrls.findIndex(url => url === currentSrc);
+    if (currentIndex < fallbackUrls.length - 1) {
+      console.log('Trying cart fallback URL:', fallbackUrls[currentIndex + 1]);
+      e.target.src = fallbackUrls[currentIndex + 1];
+    }
   };
 
   return (

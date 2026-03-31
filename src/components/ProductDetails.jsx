@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getImageUrl } from "../utils/imageUtils";
+import { getImageUrl, getFallbackUrls } from "../utils/imageUtils";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -15,7 +15,15 @@ const ProductDetails = () => {
   }, [id]);
 
   const handleImageError = (e) => {
-    e.target.src = "https://via.placeholder.com/600x600/f3f4f6/9ca3af?text=No+Image";
+    console.log('Product detail image failed to load:', e.target.src);
+    const fallbackUrls = getFallbackUrls(product?.image);
+    const currentSrc = e.target.src;
+
+    const currentIndex = fallbackUrls.findIndex(url => url === currentSrc);
+    if (currentIndex < fallbackUrls.length - 1) {
+      console.log('Trying fallback URL:', fallbackUrls[currentIndex + 1]);
+      e.target.src = fallbackUrls[currentIndex + 1];
+    }
   };
 
   if (!product) {
