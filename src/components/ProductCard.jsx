@@ -1,14 +1,11 @@
 import { Link, useNavigate } from "react-router";
 import { useCart } from "../context/CartContext";
-import { getImageUrl, getFallbackUrls } from "../utils/imageUtils";
+import { normalizeImageUrl, imageErrorFallback } from "../utils/imageUtils";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
-
-  // Debug: Log the product data and generated URL
-  console.log('Product data:', product);
-  console.log('Image URL:', getImageUrl(product.image));
+  const imageUrl = normalizeImageUrl(product.image);
 
   const handleAddToCart = async () => {
     const success = await addToCart(product);
@@ -17,28 +14,14 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  const handleImageError = (e) => {
-    console.log('Image failed to load:', e.target.src);
-    const fallbackUrls = getFallbackUrls(product.image);
-    const currentSrc = e.target.src;
-
-    const currentIndex = fallbackUrls.findIndex(url => url === currentSrc);
-    if (currentIndex < fallbackUrls.length - 1) {
-      console.log('Trying fallback URL:', fallbackUrls[currentIndex + 1]);
-      e.target.src = fallbackUrls[currentIndex + 1];
-    } else {
-      console.log('All URLs failed, using final placeholder');
-    }
-  };
-
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-amber-100">
       <Link to={`/products/${product._id}`} className="block">
         <div className="relative overflow-hidden">
           <img
-            src={getImageUrl(product.image)}
+            src={imageUrl}
             alt={product.name}
-            onError={handleImageError}
+            onError={imageErrorFallback}
             className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>

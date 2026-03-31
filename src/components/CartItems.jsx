@@ -1,5 +1,5 @@
 import dustbin from "../assets/dustbin.png";
-import { getImageUrl, getFallbackUrls } from "../utils/imageUtils";
+import { normalizeImageUrl, imageErrorFallback } from "../utils/imageUtils";
 
 const CartItem = ({ index, item, cart, setCart }) => {
 
@@ -22,26 +22,11 @@ const CartItem = ({ index, item, cart, setCart }) => {
     setCart(updatedCart);
   };
 
-  const handleImageError = (e) => {
-    console.log('Cart item image failed to load:', e.target.src);
-    const fallbackUrls = getFallbackUrls(item.image);
-    const currentSrc = e.target.src;
-
-    const currentIndex = fallbackUrls.findIndex(url => url === currentSrc);
-    if (currentIndex < fallbackUrls.length - 1) {
-      console.log('Trying cart fallback URL:', fallbackUrls[currentIndex + 1]);
-      e.target.src = fallbackUrls[currentIndex + 1];
-    }
-  };
+  const imageUrl = normalizeImageUrl(item.image);
 
   return (
     <div className="shadow-lg flex gap-10 border border-gray-200 p-4 rounded-xl mb-5 transform transition duration-400 hover:scale-105">
-      <img 
-        src={getImageUrl(item.image)} 
-        alt={item.name} 
-        className="w-20 h-20 rounded-md"
-        onError={handleImageError}
-      />
+      <img src={imageUrl} alt={item.name} onError={imageErrorFallback} className="w-20 h-20 rounded-md" />
 
       <div className="flex-col items-start">
         <p className="font-bold text-lg mb-1">{item.name}</p>

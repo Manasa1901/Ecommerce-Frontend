@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { getImageUrl, getFallbackUrls } from "../utils/imageUtils";
+import { normalizeImageUrl, imageErrorFallback } from "../utils/imageUtils";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -14,18 +14,6 @@ const ProductDetails = () => {
       .catch((err) => console.error(err));
   }, [id]);
 
-  const handleImageError = (e) => {
-    console.log('Product detail image failed to load:', e.target.src);
-    const fallbackUrls = getFallbackUrls(product?.image);
-    const currentSrc = e.target.src;
-
-    const currentIndex = fallbackUrls.findIndex(url => url === currentSrc);
-    if (currentIndex < fallbackUrls.length - 1) {
-      console.log('Trying fallback URL:', fallbackUrls[currentIndex + 1]);
-      e.target.src = fallbackUrls[currentIndex + 1];
-    }
-  };
-
   if (!product) {
     return (
       <h1 className="text-center text-2xl font-bold mt-10">
@@ -34,14 +22,16 @@ const ProductDetails = () => {
     );
   }
 
+  const imageUrl = normalizeImageUrl(product.image);
+
   return (
     <div className="max-w-5xl mx-auto p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
 
       {/* IMAGE */}
       <img
-        src={getImageUrl(product.image)}
+        src={imageUrl}
         alt={product.name}
-        onError={handleImageError}
+        onError={imageErrorFallback}
         className="w-full h-[600px] object-cover rounded-xl shadow-lg"
       />
 

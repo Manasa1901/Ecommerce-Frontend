@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { normalizeImageUrl, imageErrorFallback } from "../utils/imageUtils";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -155,7 +156,8 @@ const Cart = () => {
           className="flex gap-6 border-b pb-4 mb-4"
         >
           <img
-            src={item.product.image}
+            src={normalizeImageUrl(item.product.image)}
+            onError={imageErrorFallback}
             className="w-32 h-32 object-cover rounded"
           />
 
