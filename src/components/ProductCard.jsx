@@ -12,13 +12,18 @@ const ProductCard = ({ product }) => {
     }
   };
 
+  const handleImageError = (e) => {
+    e.target.src = "https://via.placeholder.com/400x300/f3f4f6/9ca3af?text=No+Image";
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-amber-100">
       <Link to={`/products/${product._id}`} className="block">
         <div className="relative overflow-hidden">
           <img
-            src={product.image}
+            src={product.image || "https://via.placeholder.com/400x300/f3f4f6/9ca3af?text=No+Image"}
             alt={product.name}
+            onError={handleImageError}
             className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300"></div>

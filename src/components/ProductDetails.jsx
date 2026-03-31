@@ -13,6 +13,10 @@ const ProductDetails = () => {
       .catch((err) => console.error(err));
   }, [id]);
 
+  const handleImageError = (e) => {
+    e.target.src = "https://via.placeholder.com/600x600/f3f4f6/9ca3af?text=No+Image";
+  };
+
   if (!product) {
     return (
       <h1 className="text-center text-2xl font-bold mt-10">
@@ -26,8 +30,9 @@ const ProductDetails = () => {
 
       {/* IMAGE */}
       <img
-        src={product.image}
+        src={product.image || "https://via.placeholder.com/600x600/f3f4f6/9ca3af?text=No+Image"}
         alt={product.name}
+        onError={handleImageError}
         className="w-full h-[600px] object-cover rounded-xl shadow-lg"
       />
 
