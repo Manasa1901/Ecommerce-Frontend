@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="border-4 border-yellow-500 rounded-xl p-3 hover:shadow-xl transition">
+    <div className="border-4 border-yellow-500 rounded-xl p-3 hover:shadow-xl transition duration-200">
       <Link to={`/products/${product._id}`}>
         <img
           src={product.image}
@@ -47,7 +47,7 @@ const ProductCard = ({ product }) => {
 
       <button
         onClick={handleAddToCart}
-        className="w-full mt-4 border-2 py-2 rounded-lg font-bold hover:bg-yellow-500 transition"
+        className="w-full mt-4 border-2 py-2 rounded-lg font-bold hover:bg-yellow-500 transition duration-200"
       >
         Add to Cart
       </button>

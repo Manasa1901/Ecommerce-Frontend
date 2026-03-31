@@ -31,14 +31,14 @@ const Home = () => {
           <div className="flex gap-4">
             <Link
               to="/products"
-              className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 py-3 rounded-lg shadow-lg transition"
+              className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 py-3 rounded-lg shadow-lg transition duration-200"
             >
               Shop Furniture
             </Link>
 
             <Link
               to="/products"
-              className="border-2 border-white text-white hover:bg-white hover:text-black font-bold px-8 py-3 rounded-lg transition"
+              className="border-2 border-white text-white hover:bg-white hover:text-black font-bold px-8 py-3 rounded-lg transition duration-200"
             >
               Explore Collection
             </Link>

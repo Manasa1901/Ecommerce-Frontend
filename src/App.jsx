@@ -10,6 +10,7 @@ import Orders from "./components/Orders";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Admin from "./components/Admin";
+import Profile from "./components/Profile";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
@@ -21,7 +22,8 @@ function App() {
     <>
       <Header />
 
-      <Routes>
+      <div className="fade-in">
+        <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:id" element={<ProductDetails />} />
@@ -31,6 +33,15 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/admin"
@@ -50,6 +61,7 @@ function App() {
           }
         />
       </Routes>
+      </div>
 
       {location.pathname !== "/login" && location.pathname !== "/register" && <Footer />}
       </>
