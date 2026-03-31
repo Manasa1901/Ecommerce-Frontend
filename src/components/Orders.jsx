@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router";
 import { useCart } from "../context/CartContext";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../utils/imageUtils";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -58,6 +59,10 @@ const Orders = () => {
         autoClose: 2000,
       });
     }
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = "https://via.placeholder.com/112x112/f3f4f6/9ca3af?text=No+Image";
   };
 
   // ================= LOADING =================
@@ -169,9 +174,10 @@ const Orders = () => {
                 <div className="flex items-center gap-6">
                   <Link to={`/products/${item.product._id}`}>
                     <img
-                      src={item.product.image}
+                      src={getImageUrl(item.product.image)}
                       alt={item.product.name}
                       className="w-28 h-28 object-cover rounded-xl border"
+                      onError={handleImageError}
                     />
                   </Link>
 

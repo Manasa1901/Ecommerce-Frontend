@@ -1,4 +1,5 @@
 import dustbin from "../assets/dustbin.png";
+import { getImageUrl } from "../utils/imageUtils";
 
 const CartItem = ({ index, item, cart, setCart }) => {
 
@@ -21,9 +22,18 @@ const CartItem = ({ index, item, cart, setCart }) => {
     setCart(updatedCart);
   };
 
+  const handleImageError = (e) => {
+    e.target.src = "https://via.placeholder.com/80x80/f3f4f6/9ca3af?text=No+Image";
+  };
+
   return (
     <div className="shadow-lg flex gap-10 border border-gray-200 p-4 rounded-xl mb-5 transform transition duration-400 hover:scale-105">
-      <img src={item.image} alt={item.name} className="w-20 h-20 rounded-md" />
+      <img 
+        src={getImageUrl(item.image)} 
+        alt={item.name} 
+        className="w-20 h-20 rounded-md"
+        onError={handleImageError}
+      />
 
       <div className="flex-col items-start">
         <p className="font-bold text-lg mb-1">{item.name}</p>
