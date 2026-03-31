@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getImageUrl } from "../utils/imageUtils";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -30,7 +31,7 @@ const ProductDetails = () => {
 
       {/* IMAGE */}
       <img
-        src={product.image || "https://via.placeholder.com/600x600/f3f4f6/9ca3af?text=No+Image"}
+        src={getImageUrl(product.image)}
         alt={product.name}
         onError={handleImageError}
         className="w-full h-[600px] object-cover rounded-xl shadow-lg"

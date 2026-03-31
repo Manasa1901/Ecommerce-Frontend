@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { useCart } from "../context/CartContext";
+import { getImageUrl } from "../utils/imageUtils";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
@@ -21,7 +22,7 @@ const ProductCard = ({ product }) => {
       <Link to={`/products/${product._id}`} className="block">
         <div className="relative overflow-hidden">
           <img
-            src={product.image || "https://via.placeholder.com/400x300/f3f4f6/9ca3af?text=No+Image"}
+            src={getImageUrl(product.image)}
             alt={product.name}
             onError={handleImageError}
             className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
